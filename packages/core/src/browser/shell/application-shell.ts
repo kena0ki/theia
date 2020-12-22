@@ -86,6 +86,7 @@ export class DockPanelRenderer implements DockLayout.IRenderer {
         const tabBar = new ToolbarAwareTabBar(this.tabBarToolbarRegistry, this.tabBarToolbarFactory, {
             renderer,
             // Scroll bar options
+            maxScrollbarLength: 200,
             handlers: ['drag-thumb', 'keyboard', 'wheel', 'touch'],
             useBothWheelAxes: true,
             scrollXMarginOffset: 4,

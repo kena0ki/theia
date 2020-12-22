@@ -132,6 +132,8 @@ export class SidePanelHandler {
     protected createSideBar(): SideTabBar {
         const side = this.side;
         const tabBarRenderer = this.tabBarRendererFactory();
+        console.log('createSideBar');
+        console.log(tabBarRenderer);
         const sideBar = new SideTabBar({
             // Tab bar options
             orientation: side === 'left' || side === 'right' ? 'vertical' : 'horizontal',

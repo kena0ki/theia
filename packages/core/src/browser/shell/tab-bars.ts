@@ -432,6 +432,7 @@ export class TabBarRenderer extends TabBar.Renderer {
     }
 
     protected handleContextMenuEvent = (event: MouseEvent) => {
+        console.log('tabbar:handleContextMenuEvent');
         if (this.contextMenuRenderer && this.contextMenuPath && event.currentTarget instanceof HTMLElement) {
             event.stopPropagation();
             event.preventDefault();
@@ -496,6 +497,10 @@ export class ScrollableTabBar extends TabBar<Widget> {
     protected onUpdateRequest(msg: Message): void {
         super.onUpdateRequest(msg);
         if (this.scrollBar) {
+            if (this.scrollBar.scrollbarXRail?.style) {
+                this.scrollBar.scrollbarXRail.style.width = '200px';
+            }
+            console.log(this.scrollBar.scrollbarXRail);
             this.scrollBar.update();
         }
     }
@@ -525,6 +530,8 @@ export class ScrollableTabBar extends TabBar<Widget> {
                 if (tab && this.isVisible) {
                     const parent = this.scrollbarHost;
                     if (this.orientation === 'horizontal') {
+                        console.info(parent);
+                        console.info(tab);
                         const scroll = parent.scrollLeft;
                         const left = tab.offsetLeft;
                         if (scroll > left) {
@@ -630,6 +637,7 @@ export class ToolbarAwareTabBar extends ScrollableTabBar {
     }
 
     protected onUpdateRequest(msg: Message): void {
+        console.log('ToolbarAwareTabBar.onUpdateRequest');
         super.onUpdateRequest(msg);
         this.updateToolbar();
     }
@@ -743,6 +751,7 @@ export class SideTabBar extends ScrollableTabBar {
     }
 
     protected onUpdateRequest(msg: Message): void {
+        console.log('SideTabBar.onUpdateRequest');
         this.renderTabBar();
         if (this.scrollBar) {
             this.scrollBar.update();

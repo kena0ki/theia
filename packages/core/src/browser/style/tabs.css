@@ -335,6 +335,7 @@ body.theia-editor-highlightModifiedTabs
 .p-TabBar-content-container {
   display: flex;
   flex: 1;
+  position: relative; /* This is necessary to use perfect-scroll */
 }
 
 .p-TabBar-toolbar .item {

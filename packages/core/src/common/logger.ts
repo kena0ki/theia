@@ -46,9 +46,9 @@ export function setRootLogger(aLogger: ILogger): void {
 
     console.error = log.bind(undefined, LogLevel.ERROR);
     console.warn = log.bind(undefined, LogLevel.WARN);
-    console.info = log.bind(undefined, LogLevel.INFO);
+    // console.info = log.bind(undefined, LogLevel.INFO);
     console.debug = log.bind(undefined, LogLevel.DEBUG);
-    console.trace = log.bind(undefined, LogLevel.TRACE);
+    // console.trace = log.bind(undefined, LogLevel.TRACE);
     console.log = log.bind(undefined, LogLevel.INFO);
 }
 

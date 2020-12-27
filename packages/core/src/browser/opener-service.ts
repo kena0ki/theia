@@ -78,8 +78,8 @@ export interface OpenerService {
 }
 
 export async function open(openerService: OpenerService, uri: URI, options?: OpenerOptions): Promise<object | undefined> {
+    console.info('deb: opener-service');
     const opener = await openerService.getOpener(uri, options);
-    console.info('deb:opener.open');
     return opener.open(uri, options);
 }
 

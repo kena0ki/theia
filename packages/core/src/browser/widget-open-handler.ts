@@ -86,6 +86,7 @@ export abstract class WidgetOpenHandler<W extends BaseWidget> implements OpenHan
      * @returns promise of the widget that resolves when the widget has been opened.
      */
     async open(uri: URI, options?: WidgetOpenerOptions): Promise<W> {
+        console.info('deb: widget-open-handler');
         const widget = await this.getOrCreateWidget(uri, options);
         await this.doOpen(widget, options);
         return widget;

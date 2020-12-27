@@ -137,6 +137,7 @@ export class EditorManager extends NavigatableWidgetOpenHandler<EditorWidget> {
     }
 
     async open(uri: URI, options?: EditorOpenerOptions): Promise<EditorWidget> {
+        console.info('deb: editor-manager')
         const editor = await super.open(uri, options);
         this.revealSelection(editor, options, uri);
         return editor;

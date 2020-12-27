@@ -710,6 +710,7 @@ export class ApplicationShell extends Widget {
      * Widgets added to the top area are not tracked regarding the _current_ and _active_ states.
      */
     async addWidget(widget: Widget, options: Readonly<ApplicationShell.WidgetOptions> = {}): Promise<void> {
+        console.trace('deb: application-shell.addWidget');
         if (!widget.id) {
             console.error('Widgets added to the application shell must have a unique id property.');
             return;

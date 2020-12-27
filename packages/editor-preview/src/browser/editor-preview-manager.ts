@@ -109,7 +109,7 @@ export class EditorPreviewManager extends WidgetOpenHandler<EditorPreviewWidget 
     }
 
     async open(uri: URI, options: PreviewEditorOpenerOptions = {}): Promise<EditorPreviewWidget | EditorWidget> {
-        console.info('deb: editor-preview-manager')
+        console.info('deb: editor-preview-manager');
         let widget = await this.pinCurrentEditor(uri, options);
         if (widget) {
             return widget;

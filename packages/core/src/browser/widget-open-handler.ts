@@ -87,16 +87,40 @@ export abstract class WidgetOpenHandler<W extends BaseWidget> implements OpenHan
      */
     async open(uri: URI, options?: WidgetOpenerOptions): Promise<W> {
         console.info('deb: widget-open-handler');
-        const widget = await this.getOrCreateWidget(uri, options);
-        await this.doOpen(widget, options);
+        const wId = this.widgetManager.getWidgets(this.id)[0]?.id;
+        console.info('deb: widgets before: ', wId);
+        let cache: object[] | undefined = [];
+        const str = JSON.stringify(uri, (key, value) => {
+            if (typeof value === 'object' && value !== null) { // eslint-disable-line
+                // Duplicate reference found, discard key
+                if (cache!.includes(value)) {
+                    return;
+                }
+                // Store value in our collection
+                cache!.push(value);
+            }
+            return value;
+        });
+        cache = undefined; // Enable garbage collection
+        console.info('deb: uri: ', JSON.parse(str));
+        let widget = this.widgetManager.getWidgets(this.id)
+            .find(w => w.id.endsWith(uri.scheme + '://' + uri.path)) as W;
+        if (!widget) {
+            widget = await this.getOrCreateWidget(uri, options);
+            await this.doOpen(widget, options);
+        } else {
+            console.info('deb: widget.isAttached: ', widget.isAttached);
+            await this.doOpen(widget, options, true);
+        }
+        console.info('deb: widgets after: ', this.widgetManager.getWidgets(this.id)[0]?.id);
         return widget;
     }
-    protected async doOpen(widget: W, options?: WidgetOpenerOptions): Promise<void> {
+    protected async doOpen(widget: W, options?: WidgetOpenerOptions, isAttached?: boolean): Promise<void> {
         const op: WidgetOpenerOptions = {
             mode: 'activate',
             ...options
         };
-        if (!widget.isAttached) {
+        if (!widget.isAttached && !isAttached) {
             this.shell.addWidget(widget, op.widgetOptions || { area: 'main' });
         }
         if (op.mode === 'activate') {

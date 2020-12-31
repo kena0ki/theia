@@ -103,7 +103,7 @@ export abstract class WidgetOpenHandler<W extends BaseWidget> implements OpenHan
         });
         cache = undefined; // Enable garbage collection
         console.info('deb: uri: ', JSON.parse(str));
-        let widget = this.widgetManager.getWidgets(this.id)
+        let widget: W | undefined = this.widgetManager.getWidgets(this.id)
             .find(w => w.id.endsWith(uri.scheme + '://' + uri.path)) as W;
         // if (!widget) {
         //     widget = await this.getOrCreateWidget(uri, options);
@@ -112,8 +112,13 @@ export abstract class WidgetOpenHandler<W extends BaseWidget> implements OpenHan
         //     console.info('deb: widget.isAttached: ', widget.isAttached);
         //     await this.doOpen(widget, options, true);
         // }
-        widget = await this.getOrCreateWidget(uri, options);
-        await this.doOpen(widget, options);
+        widget = await this.getWidget(uri, options);
+        if (widget) {
+            await this.doOpen(widget, options, true);
+        } else {
+            widget = await this.getOrCreateWidget(uri, options);
+            await this.doOpen(widget, options);
+        }
         console.info('deb: widgets after: ', this.widgetManager.getWidgets(this.id)[0]?.id);
         return widget;
     }

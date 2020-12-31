@@ -1040,9 +1040,11 @@ export class ApplicationShell extends Widget {
     async activateWidget(id: string): Promise<Widget | undefined> {
         const stack = this.toTrackedStack(id);
         let current = stack.pop();
+        console.info('deb1: ', current?.node, current?.node.style.top);
         if (current && !this.doActivateWidget(current.id)) {
             return undefined;
         }
+        console.info('deb2: ', current?.node, current?.node.style.top);
         while (current && stack.length) {
             const child = stack.pop()!;
             if (ApplicationShell.TrackableWidgetProvider.is(current) && current.activateWidget) {
@@ -1052,6 +1054,7 @@ export class ApplicationShell extends Widget {
                 current = child;
             }
         }
+        console.info('deb3: ', current?.node, current?.node.style.top);
         if (!current) {
             return undefined;
         }
@@ -1060,6 +1063,7 @@ export class ApplicationShell extends Widget {
             waitForRevealed(current),
             this.pendingUpdates
         ]);
+        console.info('deb4: ', current?.node, current?.node.style.top);
         return current;
     }
 

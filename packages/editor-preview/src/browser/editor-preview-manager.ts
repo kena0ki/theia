@@ -84,14 +84,22 @@ export class EditorPreviewManager extends WidgetOpenHandler<EditorPreviewWidget 
         widget.onPinned(({ preview, editorWidget }) => {
             // TODO(caseyflynn): I don't believe there is ever a case where
             // this will not hold true.
+            preview.onDidDispose(() => {
+                this.shell.onDidAddWidget(() => {
+                    this.shell.activateWidget(editorWidget.id);
+                    this.currentEditorPreview = Promise.resolve(undefined);
+                });
+            });
             if (preview.parent && preview.parent instanceof DockPanel) {
                 preview.parent.addWidget(editorWidget, { ref: preview });
             } else {
                 this.shell.addWidget(editorWidget, { area: 'main' });
             }
             preview.dispose();
-            this.shell.activateWidget(editorWidget.id);
-            this.currentEditorPreview = Promise.resolve(undefined);
+            // setTimeout(() => {
+            //     this.shell.activateWidget(editorWidget.id);
+            //     this.currentEditorPreview = Promise.resolve(undefined);
+            // }, 100);
         });
     }
 
@@ -120,6 +128,7 @@ export class EditorPreviewManager extends WidgetOpenHandler<EditorPreviewWidget 
 
     protected async pinCurrentEditor(uri: URI, options: PreviewEditorOpenerOptions): Promise<EditorWidget | EditorPreviewWidget | undefined> {
         if (await this.editorManager.getByUri(uri)) {
+            console.info('deb: editor-preview-manager.open, option:', options);
             const editorWidget = await this.editorManager.open(uri, options);
             if (editorWidget.parent instanceof EditorPreviewWidget) {
                 if (!options.preview) {

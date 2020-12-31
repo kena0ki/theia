@@ -91,6 +91,7 @@ export class TheiaDockPanel extends DockPanel {
     }
 
     activateWidget(widget: Widget): void {
+        console.trace('deb: theia-dock-panel.activateWidget');
         super.activateWidget(widget);
         this.widgetActivated.emit(widget);
     }

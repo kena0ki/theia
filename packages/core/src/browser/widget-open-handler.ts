@@ -105,13 +105,15 @@ export abstract class WidgetOpenHandler<W extends BaseWidget> implements OpenHan
         console.info('deb: uri: ', JSON.parse(str));
         let widget = this.widgetManager.getWidgets(this.id)
             .find(w => w.id.endsWith(uri.scheme + '://' + uri.path)) as W;
-        if (!widget) {
-            widget = await this.getOrCreateWidget(uri, options);
-            await this.doOpen(widget, options);
-        } else {
-            console.info('deb: widget.isAttached: ', widget.isAttached);
-            await this.doOpen(widget, options, true);
-        }
+        // if (!widget) {
+        //     widget = await this.getOrCreateWidget(uri, options);
+        //     await this.doOpen(widget, options);
+        // } else {
+        //     console.info('deb: widget.isAttached: ', widget.isAttached);
+        //     await this.doOpen(widget, options, true);
+        // }
+        widget = await this.getOrCreateWidget(uri, options);
+        await this.doOpen(widget, options);
         console.info('deb: widgets after: ', this.widgetManager.getWidgets(this.id)[0]?.id);
         return widget;
     }
@@ -120,6 +122,7 @@ export abstract class WidgetOpenHandler<W extends BaseWidget> implements OpenHan
             mode: 'activate',
             ...options
         };
+        console.info('deb: widget', widget.id, 'isAttatched', widget.isAttached);
         if (!widget.isAttached && !isAttached) {
             this.shell.addWidget(widget, op.widgetOptions || { area: 'main' });
         }

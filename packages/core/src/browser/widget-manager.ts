@@ -198,6 +198,7 @@ export class WidgetManager {
         const key = this.toKey({ factoryId, options });
         const existingWidget = this.doGetWidget<T>(key);
         if (existingWidget) {
+            console.trace('deb: return existing widget')
             return existingWidget;
         }
         const factory = this.factories.get(factoryId);
